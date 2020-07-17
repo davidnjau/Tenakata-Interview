@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "88123774263",
+    "firebase_url": "https://tenakata-bd751.firebaseio.com",
+    "project_id": "tenakata-bd751",
+    "storage_bucket": "tenakata-bd751.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88123774263:android:e9b88ee9ce632b0e9276b2",
+        "android_client_info": {
+          "package_name": "com.dtech.tenakatainterview"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "88123774263-ubgn0brj7f4kh86uhttvlm2hgimsoc15.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBevvKY8xGlZ5_9-FHPXjm8LipQUq_ULjE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88123774263-ubgn0brj7f4kh86uhttvlm2hgimsoc15.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

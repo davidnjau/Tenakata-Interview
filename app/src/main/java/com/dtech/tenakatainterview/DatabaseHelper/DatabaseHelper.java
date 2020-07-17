@@ -50,7 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addUserDetails(String name,String age,String status, String photo, String height,
+    public long addUserDetails(String name,String age,String status, String photo, String height,
                          String gps, String gender){
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -65,8 +65,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         valuesRef.put(KEY_GPS, gps);
         valuesRef.put(KEY_GENDER, gender);
 
-        db.insert(TABLE_USER_DETAILS, null, valuesRef);
+        return db.insertWithOnConflict(TABLE_USER_DETAILS, null, valuesRef, SQLiteDatabase.CONFLICT_IGNORE);
 
     }
+
+    public int updateImageUrl(long id, String url) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_PHOTO, url);
+        // update row in students table base on students.is value
+        return db.update(TABLE_USER_DETAILS, values, KEY_ID + " = ?",
+                new String[]{String.valueOf(id)});
+    }
+
 
 }
