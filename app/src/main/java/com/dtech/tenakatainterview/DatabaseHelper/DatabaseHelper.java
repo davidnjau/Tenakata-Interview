@@ -64,6 +64,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         valuesRef.put(KEY_HEIGHT, height);
         valuesRef.put(KEY_GPS, gps);
         valuesRef.put(KEY_GENDER, gender);
+
         db.insert(TABLE_USER_DETAILS, null, valuesRef);
 
     }
