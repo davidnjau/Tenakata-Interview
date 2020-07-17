@@ -1,18 +1,241 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ScrollView
+        android:layout_marginBottom="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_margin="10dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:text="Please Fill in your Details"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <LinearLayout
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageButton
+                            android:id="@+id/imgBtn1"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/round_outline"
+                            android:gravity="center"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_camera" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="Select a profile photo"
+                            android:textColor="@color/colorPrimaryDark" />
+
+                        <ImageView
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:scaleType="centerCrop"
+                            android:layout_margin="5dp"
+                            android:id="@+id/imageView1"
+                            android:gravity="center" />
+
+
+
+                    </LinearLayout>
+
+
+                    <EditText
+                        android:singleLine="true"
+                        android:id="@+id/etName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/borderroundcorner"
+                        android:hint="Name"
+                        android:inputType="textPersonName"
+                        android:padding="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:textColorHint="@android:color/darker_gray" />
+
+                    <EditText
+                        android:singleLine="true"
+                        android:layout_marginBottom="10dp"
+                        android:id="@+id/etAge"
+                        android:inputType="number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/borderroundcorner"
+                        android:hint="Age"
+                        android:padding="10dp"
+                        android:textColorHint="@android:color/darker_gray" />
+
+                    <EditText
+                        android:singleLine="true"
+                        android:inputType="numberDecimal"
+                        android:layout_marginBottom="10dp"
+                        android:id="@+id/etHeight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/borderroundcorner"
+                        android:hint="Height"
+                        android:padding="10dp"
+                        android:textColorHint="@android:color/darker_gray" />
+
+                    <EditText
+                        android:singleLine="true"
+                        android:inputType="number"
+                        android:layout_marginBottom="10dp"
+                        android:id="@+id/etIQ"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/borderroundcorner"
+                        android:hint="IQ Results"
+                        android:padding="10dp"
+                        android:textColorHint="@android:color/darker_gray" />
+
+                    <LinearLayout
+                        android:padding="5dp"
+                        android:background="@android:color/white"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="Marital Status"
+                            android:textColor="@color/colorPrimaryDark" />
+
+                        <RadioGroup
+                            android:layout_marginBottom="10dp"
+                            android:id="@+id/radioGroupStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <RadioButton
+                                android:id="@+id/radioSingle"
+                                android:text="Single"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                            <RadioButton
+                                android:id="@+id/radioMarried"
+                                android:text="Married"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                            <RadioButton
+                                android:id="@+id/radioWidowed"
+                                android:text="Widowed"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                            <RadioButton
+                                android:id="@+id/radioDivorced"
+                                android:text="divorced"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                            <RadioButton
+                                android:id="@+id/radioSeparated"
+                                android:text="Separated"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical"
+                        android:padding="5dp"
+                        android:background="@android:color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="Additional Information"
+                            android:textColor="@color/colorPrimaryDark" />
+
+                        <RadioGroup
+                            android:layout_marginBottom="10dp"
+                            android:id="@+id/radioGroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <RadioButton
+                                android:id="@+id/radioMale"
+                                android:text="Male"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                            <RadioButton
+                                android:id="@+id/radioFemale"
+                                android:text="Female"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                        </RadioGroup>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:background="@color/colorSave"
+            android:text="Save Data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
