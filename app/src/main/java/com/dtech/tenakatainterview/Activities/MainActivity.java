@@ -144,16 +144,15 @@ public class MainActivity extends AppCompatActivity {
 
                         progressDialog.show();
 
-                        long id = databaseHelper.addUserDetails(txtName, txtAge,MaritalStatus,txtImage,txtHeight,"",GenderStatus);
+                        long id = databaseHelper.addUserDetails(txtName, txtAge,MaritalStatus,txtImage
+                                ,txtHeight,"","",GenderStatus);
+
                         Toast.makeText(MainActivity.this, "Data Saved Successfully. We will upload the data once there is a network connection.", Toast.LENGTH_SHORT).show();
 
                         uploadData(id, imageUri);
 
                     }else
                         Toast.makeText(MainActivity.this, "Please Make sure you have a network connection.", Toast.LENGTH_SHORT).show();
-
-
-
 
 
                     ClearData(etName);
