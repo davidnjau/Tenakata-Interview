@@ -68,8 +68,7 @@ public class AdmittedStudents extends AppCompatActivity {
 
     private Button btnSave;
     final ArrayList<User_Pojo> userPojoArrayList1 = new ArrayList<User_Pojo>();
-    Bitmap logo, scaleBitmap;
-    int pageWidth = 1200;
+
     private DatabaseHelper databaseHelper;
     SQLiteDatabase db;
 
@@ -89,8 +88,7 @@ public class AdmittedStudents extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
         db = databaseHelper.getReadableDatabase();
 
-        logo = BitmapFactory.decodeResource(getResources(), R.drawable.tenakata1);
-        scaleBitmap = Bitmap.createScaledBitmap(logo, 1200, 518, false);
+
 
         btnSave = findViewById(R.id.btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -241,14 +239,6 @@ public class AdmittedStudents extends AppCompatActivity {
 
                             user_pojo.setKeyId(key);
 
-//                                Collections.sort(userPojoArrayList1, new Comparator<User_Pojo>() {
-//                                    @Override
-//
-//                                    public int compare(User_Pojo o1, User_Pojo o2) {
-//
-//                                        return o1.getIq_rating().compareTo(o2.getIq_rating());
-//                                    }
-//                                })
                             userPojoArrayList1.add(user_pojo);
 
                             dataRecyclerAdapter = new DataRecyclerAdapter(getApplicationContext(), userPojoArrayList1);

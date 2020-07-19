@@ -7,8 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.dtech.tenakatainterview.HelperClass.User_Pojo;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -157,5 +160,54 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+
+    public ArrayList<User_Pojo> getAdmittedList(){
+
+        ArrayList<User_Pojo> userPojoArrayList = new ArrayList<User_Pojo>();
+
+        String selectQuery = "SELECT * FROM " + TABLE_USER_DETAILS + " ORDER BY iq_rating DESC";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c.moveToFirst()){
+
+            do {
+
+                User_Pojo user_pojo = new User_Pojo();
+
+                String name = c.getString(c.getColumnIndex(KEY_NAME));
+                String age = c.getString(c.getColumnIndex(KEY_AGE));
+                String marital_status = c.getString(c.getColumnIndex(KEY_MARITAL_STATUS));
+                String photo_url = c.getString(c.getColumnIndex(KEY_PHOTO));
+                String height = c.getString(c.getColumnIndex(KEY_HEIGHT));
+                double latitude = c.getDouble(c.getColumnIndex(KEY_LATITUDE));
+                double longitude = c.getDouble(c.getColumnIndex(KEY_LONGITUDE));
+                String gender = c.getString(c.getColumnIndex(KEY_GENDER));
+                String  id = c.getString(c.getColumnIndex(KEY_IQ));
+                String key = c.getString(c.getColumnIndex(KEY_FIREBASE_ID));
+
+                user_pojo.setName(name);
+                user_pojo.setAge(age);
+                user_pojo.setPhoto_url(photo_url);
+                user_pojo.setGender(gender);
+                user_pojo.setIq_rating(id);
+
+                user_pojo.setLatitude(latitude);
+                user_pojo.setLongitude(longitude);
+                user_pojo.setHeight(height);
+                user_pojo.setMarital_status(marital_status);
+
+                user_pojo.setKeyId(key);
+
+                userPojoArrayList.add(user_pojo);
+
+            }while (c.moveToNext());
+
+            c.close();
+
+        }
+        return userPojoArrayList;
+
+    }
 
 }

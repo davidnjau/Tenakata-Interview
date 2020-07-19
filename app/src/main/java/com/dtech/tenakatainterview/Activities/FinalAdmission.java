@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -24,6 +25,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.dtech.tenakatainterview.Adapter.DataRecyclerAdapter;
+import com.dtech.tenakatainterview.DatabaseHelper.DatabaseHelper;
 import com.dtech.tenakatainterview.HelperClass.User_Pojo;
 import com.dtech.tenakatainterview.R;
 
@@ -37,20 +39,27 @@ public class FinalAdmission extends AppCompatActivity {
     RecyclerView recyclerView;
 
     private DataRecyclerAdapter dataRecyclerAdapter;
+    ArrayList<User_Pojo> userPojoArrayList1 = new ArrayList<User_Pojo>();
 
     private Button btnSave;
-    final ArrayList<User_Pojo> userPojoArrayList1 = new ArrayList<User_Pojo>();
     Bitmap logo, scaleBitmap;
     int pageWidth = 1200;
+
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_final_admission);
 
+        databaseHelper = new DatabaseHelper(this);
+
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        logo = BitmapFactory.decodeResource(getResources(), R.drawable.tenakata1);
+        scaleBitmap = Bitmap.createScaledBitmap(logo, 1200, 518, false);
 
         btnSave = findViewById(R.id.btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +98,7 @@ public class FinalAdmission extends AppCompatActivity {
             titlePaint.setTextAlign(Paint.Align.CENTER);
             titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             titlePaint.setTextSize(70);
-            canvas.drawText("Tenakata Recruitment", pageWidth/2, 270, titlePaint);
+            canvas.drawText("Tenakata Recruitment", pageWidth/2, 600, titlePaint);
 
             myPaint.setColor(Color.rgb(0,113,180));
             myPaint.setTextSize(30f);
@@ -100,7 +109,7 @@ public class FinalAdmission extends AppCompatActivity {
             titlePaint.setTextAlign(Paint.Align.CENTER);
             titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.ITALIC));
             titlePaint.setTextSize(70);
-            canvas.drawText("Admitted students", pageWidth/2, 500, titlePaint);
+            canvas.drawText("Admitted students", pageWidth/2, 670, titlePaint);
 
             myPaint.setStyle(Paint.Style.STROKE);
             myPaint.setStrokeWidth(2);
@@ -116,9 +125,9 @@ public class FinalAdmission extends AppCompatActivity {
             canvas.drawText("Marital Status", 1050, 830, myPaint);
 
             canvas.drawLine(180, 790,180,840, myPaint);
+            canvas.drawLine(280, 790,280,840, myPaint);
+            canvas.drawLine(480, 790,480,840, myPaint);
             canvas.drawLine(680, 790,680,840, myPaint);
-            canvas.drawLine(880, 790,880,840, myPaint);
-            canvas.drawLine(1030, 790,10300,840, myPaint);
 
             //Retrieve Data
             canvas.drawText("Dave", 40, 950, myPaint);
@@ -157,6 +166,11 @@ public class FinalAdmission extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        userPojoArrayList1 = databaseHelper.getAdmittedList();
+
+        dataRecyclerAdapter = new DataRecyclerAdapter(getApplicationContext(), userPojoArrayList1);
+        recyclerView.setAdapter(dataRecyclerAdapter);
 
         if (permissionAlreadyGranted()){
 
