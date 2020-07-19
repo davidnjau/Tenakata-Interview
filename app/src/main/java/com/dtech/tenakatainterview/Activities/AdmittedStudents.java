@@ -93,6 +93,7 @@ public class AdmittedStudents extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admitted_students);
 
+        //Initialization
         progressDialog = new ProgressDialog(this);
 
         progressDialog.setTitle("Please wait. ");
@@ -115,6 +116,7 @@ public class AdmittedStudents extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                //Check for permissions
                 if (permissionAlreadyGranted()){
 
                     GeneratePdf();
@@ -133,7 +135,7 @@ public class AdmittedStudents extends AppCompatActivity {
     }
 
     private void getData(){
-
+//Get Data from Firebase Database
         final ArrayList<User_Pojo> userPojoArrayList = new ArrayList<User_Pojo>();
 
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -182,7 +184,7 @@ public class AdmittedStudents extends AppCompatActivity {
                             user_pojo.setKeyId(key);
 
                             userPojoArrayList.add(user_pojo);
-
+//Add Data to the Sqlite
                             AddData(userPojoArrayList);
 
                         }
@@ -205,7 +207,7 @@ public class AdmittedStudents extends AppCompatActivity {
 
 
     private void GeneratePdf() {
-
+//Generate PDF
         ArrayList<User_Pojo> userPojoArrayList1 = databaseHelper.getAdmittedList();
 
         if (userPojoArrayList1.size() > 0){
@@ -284,7 +286,7 @@ public class AdmittedStudents extends AppCompatActivity {
 
             }
             myPdfDocument.finishPage(myPage);
-
+//Add the file to the Phone storage
             File file = new File(Environment.getExternalStorageDirectory(), "/Applicants.pdf");
             try {
 
@@ -447,6 +449,7 @@ public class AdmittedStudents extends AppCompatActivity {
     }
 
 
+    //Create a circular imageview
     public static class CircleTransform implements Transformation {
         @Override
         public Bitmap transform(Bitmap source) {
