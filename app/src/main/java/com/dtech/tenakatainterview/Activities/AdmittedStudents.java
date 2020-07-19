@@ -3,22 +3,31 @@ package com.dtech.tenakatainterview.Activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.graphics.Typeface;
+import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dtech.tenakatainterview.Adapter.DataRecyclerAdapter;
 import com.dtech.tenakatainterview.HelperClass.User_Pojo;
@@ -37,6 +46,9 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -50,6 +62,11 @@ public class AdmittedStudents extends AppCompatActivity {
     private ArrayList<User_Pojo> user_pojo_items;
     private DataRecyclerAdapter dataRecyclerAdapter;
 
+    private Button btnSave;
+    final ArrayList<User_Pojo> userPojoArrayList1 = new ArrayList<User_Pojo>();
+    Bitmap logo, scaleBitmap;
+    int pageWidth = 1200;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +76,96 @@ public class AdmittedStudents extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        logo = BitmapFactory.decodeResource(getResources(), R.drawable.tenakata1);
+        scaleBitmap = Bitmap.createScaledBitmap(logo, 1200, 518, false);
+
+        btnSave = findViewById(R.id.btnSave);
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (userPojoArrayList1.size() > 0){
+
+                    PdfDocument myPdfDocument = new PdfDocument();
+                    Paint myPaint = new Paint();
+                    Paint titlePaint = new Paint();
+
+                    PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(1200, 2010,1).create();
+                    PdfDocument.Page myPage = myPdfDocument.startPage(myPageInfo);
+                    Canvas canvas = myPage.getCanvas();
+
+                    canvas.drawBitmap(scaleBitmap,0,0,myPaint);
+
+                    titlePaint.setTextAlign(Paint.Align.CENTER);
+                    titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                    titlePaint.setTextSize(70);
+                    canvas.drawText("Tenakata Recruitment", pageWidth/2, 270, titlePaint);
+
+                    myPaint.setColor(Color.rgb(0,113,180));
+                    myPaint.setTextSize(30f);
+                    myPaint.setTextAlign(Paint.Align.RIGHT);
+                    canvas.drawText("Email: jobs@tenakata.com", 1160,40, myPaint);
+                    canvas.drawText("mobile@tenakata.com", 1160,80, myPaint);
+
+                    titlePaint.setTextAlign(Paint.Align.CENTER);
+                    titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.ITALIC));
+                    titlePaint.setTextSize(70);
+                    canvas.drawText("Admitted students", pageWidth/2, 500, titlePaint);
+
+                    myPaint.setStyle(Paint.Style.STROKE);
+                    myPaint.setStrokeWidth(2);
+                    canvas.drawRect(20, 780, pageWidth-20, 860, myPaint);
+
+                    myPaint.setTextAlign(Paint.Align.LEFT);
+                    myPaint.setStyle(Paint.Style.FILL);
+
+                    canvas.drawText("Name", 40, 830, myPaint);
+                    canvas.drawText("Age", 200, 830, myPaint);
+                    canvas.drawText("Gender", 700, 830, myPaint);
+                    canvas.drawText("IQ rating", 900, 830, myPaint);
+                    canvas.drawText("Marital Status", 1050, 830, myPaint);
+
+                    canvas.drawLine(180, 790,180,840, myPaint);
+                    canvas.drawLine(680, 790,680,840, myPaint);
+                    canvas.drawLine(880, 790,880,840, myPaint);
+                    canvas.drawLine(1030, 790,10300,840, myPaint);
+
+                    //Retrieve Data
+                    canvas.drawText("Dave", 40, 950, myPaint);
+                    canvas.drawText("20", 200,950, myPaint);
+                    canvas.drawText("Male", 700,950, myPaint);
+                    canvas.drawText("120", 900,950, myPaint);
+//                    canvas.drawText("Single", 1050,950, myPaint);
+                    myPaint.setTextAlign(Paint.Align.RIGHT);
+                    canvas.drawText("Single", pageWidth-40, 950, myPaint);
+                    myPaint.setTextAlign(Paint.Align.LEFT);
+
+                    myPdfDocument.finishPage(myPage);
+
+                    File file = new File(Environment.getExternalStorageDirectory(), "/Hello.pdf");
+                    try {
+
+                        myPdfDocument.writeTo(new FileOutputStream(file));
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    myPdfDocument.close();
+
+                    Toast.makeText(AdmittedStudents.this, "Done", Toast.LENGTH_SHORT).show();
+
+
+                }else {
+
+                    Toast.makeText(AdmittedStudents.this, "You cannot generate a pdf without any data", Toast.LENGTH_SHORT).show();
+
+                }
+
+
+            }
+        });
+
         mDatabase = FirebaseDatabase.getInstance().getReference().child("Tenakata_db");
 //        fetchData();
         getData();
@@ -67,8 +174,6 @@ public class AdmittedStudents extends AppCompatActivity {
 
 
     private ArrayList<User_Pojo> getData(){
-
-        final ArrayList<User_Pojo> userPojoArrayList1 = new ArrayList<User_Pojo>();
 
         userPojoArrayList1.clear();
 
