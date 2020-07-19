@@ -24,6 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_MARITAL_STATUS = "marital_status";
     private static final String KEY_PHOTO = "photo";
     private static final String KEY_HEIGHT = "height";
+    private static final String KEY_IQ = "iq_rating";
 
     private static final String KEY_LONGITUDE = "longitude";
     private static final String KEY_LATITUDE = "latitude";
@@ -39,6 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + KEY_HEIGHT + " TEXT, "
             + KEY_LONGITUDE + " TEXT, "
             + KEY_LATITUDE + " TEXT, "
+            + KEY_IQ + " TEXT, "
             + KEY_GENDER + " TEXT );";
 
     private DatabaseReference mDatabase;
@@ -61,7 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public long addUserDetails(String name,String age,String status, String photo, String height,
-                         String latitude, String longitude, String gender){
+                         String latitude, String longitude, String gender, String iq){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -72,6 +74,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         valuesRef.put(KEY_MARITAL_STATUS, status);
         valuesRef.put(KEY_PHOTO, photo);
         valuesRef.put(KEY_HEIGHT, height);
+
+        valuesRef.put(KEY_IQ, iq);
 
         valuesRef.put(KEY_LATITUDE, latitude);
         valuesRef.put(KEY_LONGITUDE, longitude);
@@ -116,9 +120,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     String Marital_Status = c.getString(c.getColumnIndex(KEY_MARITAL_STATUS));
                     String Photo_url = c.getString(c.getColumnIndex(KEY_PHOTO));
                     String Height = c.getString(c.getColumnIndex(KEY_HEIGHT));
-                    String Latitude = c.getString(c.getColumnIndex(KEY_LATITUDE));
-                    String Longitude = c.getString(c.getColumnIndex(KEY_LONGITUDE));
+                    double Latitude = c.getDouble(c.getColumnIndex(KEY_LATITUDE));
+                    double Longitude = c.getDouble(c.getColumnIndex(KEY_LONGITUDE));
                     String Gender = c.getString(c.getColumnIndex(KEY_GENDER));
+                    int Iq = c.getInt(c.getColumnIndex(KEY_IQ));
 
                     newPost.child("name").setValue(Name);
                     newPost.child("age").setValue(Age);
@@ -128,6 +133,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     newPost.child("latitude").setValue(Latitude);
                     newPost.child("longitude").setValue(Longitude);
                     newPost.child("gender").setValue(Gender);
+                    newPost.child("iq_rating").setValue(Iq);
 
                 }while (c.moveToNext());
 
