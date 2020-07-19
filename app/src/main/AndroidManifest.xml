@@ -16,9 +16,10 @@
         android:supportsRtl="true"
         android:requestLegacyExternalStorage="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.FinalAdmission"></activity>
-        <activity android:name=".Activities.AdmittedStudents" />
-        <activity android:name=".Activities.MainActivity">
+        <activity android:name=".Activities.AdmittedStudents"
+            android:label="View all applicants"/>
+        <activity android:name=".Activities.MainActivity"
+            android:label="Fill in your details">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

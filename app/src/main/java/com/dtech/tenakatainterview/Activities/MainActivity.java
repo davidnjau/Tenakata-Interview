@@ -230,13 +230,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             }
         });
 
-        btnSave.setOnLongClickListener(new View.OnLongClickListener() {
+        findViewById(R.id.btnAdmissions).setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onClick(View v) {
 
                 startActivity(new Intent(MainActivity.this, AdmittedStudents.class));
 
-                return false;
             }
         });
 

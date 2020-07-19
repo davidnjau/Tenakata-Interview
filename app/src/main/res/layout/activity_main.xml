@@ -295,7 +295,7 @@
                                 android:layout_marginStart="5dp"
                                 android:layout_marginLeft="20dp"
                                 android:layout_weight="1"
-                                android:text="Longititude:"
+                                android:text="Longitude:"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 
@@ -308,7 +308,6 @@
                                 android:layout_marginLeft="10dp"
                                 android:layout_weight="1"
                                 android:gravity="right"
-
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 
@@ -330,14 +329,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/btnSave"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:background="@color/colorSave"
-            android:text="Save Data"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnSave"
+                android:textAllCaps="false"
+                android:layout_margin="10dp"
+                android:textColor="@android:color/white"
+                android:background="@color/colorSave"
+                android:text="Save Data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/btnAdmissions"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:background="@drawable/newbutton"
+                android:text="View Admission List"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
 
     </RelativeLayout>
 

@@ -29,7 +29,7 @@
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:background="@color/colorSave"
-            android:text="See final list"
+            android:text="Generate Pdf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
