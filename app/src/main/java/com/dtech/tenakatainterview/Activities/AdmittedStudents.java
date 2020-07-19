@@ -311,7 +311,7 @@ public class AdmittedStudents extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        RequestPermissions();
+        PopulateRecyclerView();
 
         if (permissionAlreadyGranted()){
 
@@ -369,6 +369,8 @@ public class AdmittedStudents extends AppCompatActivity {
             String photoUrl = userPojoArrayList1.get(i).getPhoto_url();
             String height = userPojoArrayList1.get(i).getHeight();
 
+            Log.e("-*-*-*- ", name);
+
             double latitude = userPojoArrayList1.get(i).getLatitude();
             double longitude = userPojoArrayList1.get(i).getLongitude();
 
@@ -402,6 +404,8 @@ public class AdmittedStudents extends AppCompatActivity {
                             databaseHelper.addUserDetails(key, name, age,maritalStatus,photoUrl
                                     ,height,Long,Lat,gender, iqRating);
 
+                            PopulateRecyclerView();
+
                         }
 
                     }catch (Exception e){
@@ -422,9 +426,11 @@ public class AdmittedStudents extends AppCompatActivity {
                 databaseHelper.addUserDetails(key, name, age,maritalStatus,photoUrl
                         ,height,Long,Lat,gender, iqRating);
 
+                PopulateRecyclerView();
+
             }
 
-            PopulateRecyclerView();
+
 
 
         }
@@ -435,18 +441,9 @@ public class AdmittedStudents extends AppCompatActivity {
 
     private void PopulateRecyclerView(){
 
-
+        Toast.makeText(this, "Please wait as we get your data", Toast.LENGTH_SHORT).show();
 
         user_pojoArrayList = databaseHelper.getAdmittedList();
-        if (user_pojoArrayList.size() < 1){
-
-            progressDialog.show();
-
-        }else {
-
-            progressDialog.dismiss();
-
-        }
         dataRecyclerAdapter = new DataRecyclerAdapter(getApplicationContext(), user_pojoArrayList);
         recyclerView.setAdapter(dataRecyclerAdapter);
     }

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Tenakata Interview</string>
+    <string name="these_are_persons_with_an_iq_of_greater_than_100_and_live_in_kenya">These are persons with an IQ of greater than 100 and live in Kenya</string>
 </resources>

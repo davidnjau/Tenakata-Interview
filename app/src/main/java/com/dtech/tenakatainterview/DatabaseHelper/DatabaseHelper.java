@@ -167,7 +167,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String selectQuery = "SELECT * FROM "
                 + TABLE_USER_DETAILS
-                + " ORDER BY gender ASC," + "iq_rating DESC";
+                + " ORDER BY gender ASC,"
+                + "iq_rating DESC";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);

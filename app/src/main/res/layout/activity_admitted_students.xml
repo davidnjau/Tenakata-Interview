@@ -11,7 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:id="@+id/tv"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:text="@string/these_are_persons_with_an_iq_of_greater_than_100_and_live_in_kenya"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@+id/tv"
             android:layout_margin="10dp"
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
