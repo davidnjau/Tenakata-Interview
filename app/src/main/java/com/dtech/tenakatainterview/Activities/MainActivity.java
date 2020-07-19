@@ -176,17 +176,25 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                     String txtImage = String.valueOf(Image);
 
+                    double longitude = Double.parseDouble(locationLongitude);
 
                     if (checkInternet.isConnected(MainActivity.this)){
 
-                        progressDialog.show();
+                        if (longitude < 5.33 && longitude > -4.76) {
 
-                        long id = databaseHelper.addUserDetails("", txtName, txtAge,MaritalStatus,txtImage
-                                ,txtHeight,locationLatitude,locationLongitude,GenderStatus, txtIq);
+                            progressDialog.show();
 
-                        Toast.makeText(MainActivity.this, "Data Saved Successfully. We will upload the data once there is a network connection.", Toast.LENGTH_SHORT).show();
+                            long id = databaseHelper.addUserDetails("", txtName, txtAge,MaritalStatus,txtImage
+                                    ,txtHeight,locationLatitude,locationLongitude,GenderStatus, txtIq);
 
-                        uploadData(id, imageUri);
+                            Toast.makeText(MainActivity.this, "Data Saved Successfully. We will upload the data once there is a network connection.", Toast.LENGTH_SHORT).show();
+
+                            uploadData(id, imageUri);
+
+                        }else
+                            Toast.makeText(MainActivity.this, "You cannot apply as your coordinates are not in Kenya.", Toast.LENGTH_LONG).show();
+
+
 
                     }else
                         Toast.makeText(MainActivity.this, "Please Make sure you have a network connection.", Toast.LENGTH_SHORT).show();

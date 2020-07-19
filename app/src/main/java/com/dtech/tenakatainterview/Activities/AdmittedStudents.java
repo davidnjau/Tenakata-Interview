@@ -369,8 +369,6 @@ public class AdmittedStudents extends AppCompatActivity {
             String photoUrl = userPojoArrayList1.get(i).getPhoto_url();
             String height = userPojoArrayList1.get(i).getHeight();
 
-            Log.e("-*-*-*- ", name);
-
             double latitude = userPojoArrayList1.get(i).getLatitude();
             double longitude = userPojoArrayList1.get(i).getLongitude();
 
