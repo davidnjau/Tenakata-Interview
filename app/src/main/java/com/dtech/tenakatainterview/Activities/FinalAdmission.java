@@ -45,6 +45,8 @@ public class FinalAdmission extends AppCompatActivity {
     Bitmap logo, scaleBitmap;
     int pageWidth = 1200;
 
+    int pageSize = 860;
+
     private DatabaseHelper databaseHelper;
 
     @Override
@@ -88,6 +90,7 @@ public class FinalAdmission extends AppCompatActivity {
             PdfDocument myPdfDocument = new PdfDocument();
             Paint myPaint = new Paint();
             Paint titlePaint = new Paint();
+            Paint contentPaint = new Paint();
 
             PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(1200, 2010,1).create();
             PdfDocument.Page myPage = myPdfDocument.startPage(myPageInfo);
@@ -98,16 +101,21 @@ public class FinalAdmission extends AppCompatActivity {
             titlePaint.setTextAlign(Paint.Align.CENTER);
             titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             titlePaint.setTextSize(70);
-            canvas.drawText("Tenakata Recruitment", pageWidth/2, 600, titlePaint);
+
+            canvas.drawText("Tenakata University", pageWidth/2, 600, titlePaint);
 
             myPaint.setColor(Color.rgb(0,113,180));
             myPaint.setTextSize(30f);
             myPaint.setTextAlign(Paint.Align.RIGHT);
-            canvas.drawText("Email: jobs@tenakata.com", 1160,40, myPaint);
-            canvas.drawText("mobile@tenakata.com", 1160,80, myPaint);
+
+            contentPaint.setColor(Color.WHITE);
+            contentPaint.setTextSize(30f);
+            contentPaint.setTextAlign(Paint.Align.RIGHT);
+
+            canvas.drawText("Email: jobs@tenakata.com", 1160,40, contentPaint);
+            canvas.drawText("mobile@tenakata.com", 1160,80, contentPaint);
 
             titlePaint.setTextAlign(Paint.Align.CENTER);
-            titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.ITALIC));
             titlePaint.setTextSize(70);
             canvas.drawText("Admitted students", pageWidth/2, 670, titlePaint);
 
@@ -118,30 +126,43 @@ public class FinalAdmission extends AppCompatActivity {
             myPaint.setTextAlign(Paint.Align.LEFT);
             myPaint.setStyle(Paint.Style.FILL);
 
-            canvas.drawText("Name", 40, 830, myPaint);
-            canvas.drawText("Age", 200, 830, myPaint);
+            canvas.drawText("S.No", 40, 830, myPaint);
+            canvas.drawText("Name", 120, 830, myPaint);
+
+            canvas.drawText("Marital Status", 480, 830, myPaint);
             canvas.drawText("Gender", 700, 830, myPaint);
             canvas.drawText("IQ rating", 900, 830, myPaint);
-            canvas.drawText("Marital Status", 1050, 830, myPaint);
+            canvas.drawText("Age", 1050, 830, myPaint);
 
-            canvas.drawLine(180, 790,180,840, myPaint);
-            canvas.drawLine(280, 790,280,840, myPaint);
-            canvas.drawLine(480, 790,480,840, myPaint);
+            canvas.drawLine(110, 790,110,840, myPaint);
+            canvas.drawLine(460, 790,460,840, myPaint);
+
             canvas.drawLine(680, 790,680,840, myPaint);
+            canvas.drawLine(880, 790,880,840, myPaint);
+            canvas.drawLine(1030, 790,1030,840, myPaint);
 
-            //Retrieve Data
-            canvas.drawText("Dave", 40, 950, myPaint);
-            canvas.drawText("20", 200,950, myPaint);
-            canvas.drawText("Male", 700,950, myPaint);
-            canvas.drawText("120", 900,950, myPaint);
-//                    canvas.drawText("Single", 1050,950, myPaint);
-            myPaint.setTextAlign(Paint.Align.RIGHT);
-            canvas.drawText("Single", pageWidth-40, 950, myPaint);
-            myPaint.setTextAlign(Paint.Align.LEFT);
 
+            for (int i = 0; i< userPojoArrayList1.size(); i++){
+
+                 pageSize = pageSize + 40;
+
+                String name = userPojoArrayList1.get(i).getName();
+                String age = userPojoArrayList1.get(i).getAge();
+                String maritalStatus = userPojoArrayList1.get(i).getMarital_status();
+                String iqRating = userPojoArrayList1.get(i).getIq_rating();
+                String gender = userPojoArrayList1.get(i).getGender();
+
+                canvas.drawText((i+1) +".", 40, pageSize, myPaint);
+                canvas.drawText(name, 120, pageSize, myPaint);
+                canvas.drawText(maritalStatus, 480,pageSize, myPaint);
+                canvas.drawText(gender, 700,pageSize, myPaint);
+                canvas.drawText(iqRating, 900,pageSize, myPaint);
+                canvas.drawText(age, 1050,pageSize, myPaint);
+
+            }
             myPdfDocument.finishPage(myPage);
 
-            File file = new File(Environment.getExternalStorageDirectory(), "/Hello.pdf");
+            File file = new File(Environment.getExternalStorageDirectory(), "/Applicants.pdf");
             try {
 
                 myPdfDocument.writeTo(new FileOutputStream(file));
@@ -152,7 +173,7 @@ public class FinalAdmission extends AppCompatActivity {
 
             myPdfDocument.close();
 
-            Toast.makeText(FinalAdmission.this, "Done", Toast.LENGTH_SHORT).show();
+            Toast.makeText(FinalAdmission.this, "Pdf has been generated and saved as applicants.pdf in your phone.", Toast.LENGTH_SHORT).show();
 
 
         }else {
