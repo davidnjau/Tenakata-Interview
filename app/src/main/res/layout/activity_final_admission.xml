@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.AdmittedStudents">
+    tools:context=".Activities.FinalAdmission">
+
 
     <LinearLayout
         android:layout_marginBottom="60dp"
@@ -29,7 +30,7 @@
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:background="@color/colorSave"
-            android:text="See final list"
+            android:text="Generate Pdf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

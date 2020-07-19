@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
@@ -86,79 +87,11 @@ public class AdmittedStudents extends AppCompatActivity {
 
                 if (userPojoArrayList1.size() > 0){
 
-                    PdfDocument myPdfDocument = new PdfDocument();
-                    Paint myPaint = new Paint();
-                    Paint titlePaint = new Paint();
-
-                    PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(1200, 2010,1).create();
-                    PdfDocument.Page myPage = myPdfDocument.startPage(myPageInfo);
-                    Canvas canvas = myPage.getCanvas();
-
-                    canvas.drawBitmap(scaleBitmap,0,0,myPaint);
-
-                    titlePaint.setTextAlign(Paint.Align.CENTER);
-                    titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                    titlePaint.setTextSize(70);
-                    canvas.drawText("Tenakata Recruitment", pageWidth/2, 270, titlePaint);
-
-                    myPaint.setColor(Color.rgb(0,113,180));
-                    myPaint.setTextSize(30f);
-                    myPaint.setTextAlign(Paint.Align.RIGHT);
-                    canvas.drawText("Email: jobs@tenakata.com", 1160,40, myPaint);
-                    canvas.drawText("mobile@tenakata.com", 1160,80, myPaint);
-
-                    titlePaint.setTextAlign(Paint.Align.CENTER);
-                    titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.ITALIC));
-                    titlePaint.setTextSize(70);
-                    canvas.drawText("Admitted students", pageWidth/2, 500, titlePaint);
-
-                    myPaint.setStyle(Paint.Style.STROKE);
-                    myPaint.setStrokeWidth(2);
-                    canvas.drawRect(20, 780, pageWidth-20, 860, myPaint);
-
-                    myPaint.setTextAlign(Paint.Align.LEFT);
-                    myPaint.setStyle(Paint.Style.FILL);
-
-                    canvas.drawText("Name", 40, 830, myPaint);
-                    canvas.drawText("Age", 200, 830, myPaint);
-                    canvas.drawText("Gender", 700, 830, myPaint);
-                    canvas.drawText("IQ rating", 900, 830, myPaint);
-                    canvas.drawText("Marital Status", 1050, 830, myPaint);
-
-                    canvas.drawLine(180, 790,180,840, myPaint);
-                    canvas.drawLine(680, 790,680,840, myPaint);
-                    canvas.drawLine(880, 790,880,840, myPaint);
-                    canvas.drawLine(1030, 790,10300,840, myPaint);
-
-                    //Retrieve Data
-                    canvas.drawText("Dave", 40, 950, myPaint);
-                    canvas.drawText("20", 200,950, myPaint);
-                    canvas.drawText("Male", 700,950, myPaint);
-                    canvas.drawText("120", 900,950, myPaint);
-//                    canvas.drawText("Single", 1050,950, myPaint);
-                    myPaint.setTextAlign(Paint.Align.RIGHT);
-                    canvas.drawText("Single", pageWidth-40, 950, myPaint);
-                    myPaint.setTextAlign(Paint.Align.LEFT);
-
-                    myPdfDocument.finishPage(myPage);
-
-                    File file = new File(Environment.getExternalStorageDirectory(), "/Hello.pdf");
-                    try {
-
-                        myPdfDocument.writeTo(new FileOutputStream(file));
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    myPdfDocument.close();
-
-                    Toast.makeText(AdmittedStudents.this, "Done", Toast.LENGTH_SHORT).show();
-
+                    startActivity(new Intent(getApplicationContext(), FinalAdmission.class));
 
                 }else {
 
-                    Toast.makeText(AdmittedStudents.this, "You cannot generate a pdf without any data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdmittedStudents.this, "Please wait until the data loads", Toast.LENGTH_SHORT).show();
 
                 }
 
@@ -240,122 +173,6 @@ public class AdmittedStudents extends AppCompatActivity {
         return userPojoArrayList1;
 
     }
-
-    private void fetchData() {
-
-//        Query query = FirebaseDatabase.getInstance()
-//                .getReference()
-//                .child("Tenakata_db");
-//
-//        FirebaseRecyclerOptions<User_Pojo> options = new FirebaseRecyclerOptions.Builder<User_Pojo>().setQuery(query, new SnapshotParser<User_Pojo>() {
-//            @NonNull
-//            @Override
-//            public User_Pojo parseSnapshot(@NonNull DataSnapshot snapshot) {
-//                return new User_Pojo(
-//
-//                        snapshot.child("name").getValue().toString(),
-//                        snapshot.child("age").getValue().toString(),
-//                        snapshot.child("marital_status").getValue().toString(),
-//                        snapshot.child("photo_url").getValue().toString(),
-//                        snapshot.child("height").getValue().toString(),
-//                        snapshot.child("latitude").getValue().toString(),
-//                        snapshot.child("longitude").getValue().toString(),
-//                        snapshot.child("iq_rating").getValue().toString(),
-//                        snapshot.child("gender").getValue().toString()
-//                );
-//            }
-//        }).build();
-//
-//        adapter = new FirebaseRecyclerAdapter<User_Pojo, ViewHolder>(options) {
-//            @Override
-//            public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//                View view = LayoutInflater.from(parent.getContext())
-//                        .inflate(R.layout.user_pojo_items, parent, false);
-//
-//                return new ViewHolder(view);
-//            }
-//
-//            @Override
-//            protected void onBindViewHolder(ViewHolder holder, final int position, User_Pojo model) {
-//                holder.setName(model.getName());
-//                holder.setGender(model.getGender());
-//                holder.setPhoto(model.getPhoto_url());
-//
-//                final String listPostKey = getRef(position).getKey();
-//
-//                holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//
-//
-//
-//                    }
-//                });
-//            }
-//
-//        };
-//
-//
-//        recyclerView.setAdapter(adapter);
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        public ImageView imageView;
-        public TextView tvName;
-        public TextView tvGender;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-
-            imageView = itemView.findViewById(R.id.imageView1);
-            tvName = itemView.findViewById(R.id.tvName);
-            tvGender = itemView.findViewById(R.id.tvGender);
-        }
-
-        public void setName(String string) {
-            tvName.setText(string);
-        }
-
-
-        public void setGender(String string) {
-            tvGender.setText(string);
-        }
-
-        public void setPhoto(final String uri) {
-
-            Picasso.get().load(uri)
-                    .placeholder(R.drawable.ic_action_image)
-                    .transform(new CircleTransform())
-                    .error(R.drawable.ic_action_descr).into(imageView, new Callback() {
-                @Override
-                public void onSuccess() {
-
-                }
-
-                @Override
-                public void onError(Exception e) {
-
-                    Picasso.get().load(uri).into(imageView);
-                }
-            });
-
-
-        }
-    }
-
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        adapter.startListening();
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        adapter.stopListening();
-//    }
-
 
     public static class CircleTransform implements Transformation {
         @Override
