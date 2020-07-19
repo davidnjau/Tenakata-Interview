@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                         progressDialog.show();
 
-                        long id = databaseHelper.addUserDetails(txtName, txtAge,MaritalStatus,txtImage
+                        long id = databaseHelper.addUserDetails("", txtName, txtAge,MaritalStatus,txtImage
                                 ,txtHeight,locationLatitude,locationLongitude,GenderStatus, txtIq);
 
                         Toast.makeText(MainActivity.this, "Data Saved Successfully. We will upload the data once there is a network connection.", Toast.LENGTH_SHORT).show();

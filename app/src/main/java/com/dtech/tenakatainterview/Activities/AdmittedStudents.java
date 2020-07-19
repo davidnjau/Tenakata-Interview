@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
@@ -31,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dtech.tenakatainterview.Adapter.DataRecyclerAdapter;
+import com.dtech.tenakatainterview.DatabaseHelper.DatabaseHelper;
 import com.dtech.tenakatainterview.HelperClass.User_Pojo;
 import com.dtech.tenakatainterview.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -67,6 +70,12 @@ public class AdmittedStudents extends AppCompatActivity {
     final ArrayList<User_Pojo> userPojoArrayList1 = new ArrayList<User_Pojo>();
     Bitmap logo, scaleBitmap;
     int pageWidth = 1200;
+    private DatabaseHelper databaseHelper;
+    SQLiteDatabase db;
+
+    public static final String TABLE_USER_DETAILS = "user_details";
+    private static final String KEY_FIREBASE_ID = "key_id";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +85,9 @@ public class AdmittedStudents extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        databaseHelper = new DatabaseHelper(this);
+        db = databaseHelper.getReadableDatabase();
 
         logo = BitmapFactory.decodeResource(getResources(), R.drawable.tenakata1);
         scaleBitmap = Bitmap.createScaledBitmap(logo, 1200, 518, false);
@@ -87,7 +99,10 @@ public class AdmittedStudents extends AppCompatActivity {
 
                 if (userPojoArrayList1.size() > 0){
 
-                    startActivity(new Intent(getApplicationContext(), FinalAdmission.class));
+                    //Add the list to SQLITE database
+
+                    AddData();
+
 
                 }else {
 
@@ -104,6 +119,77 @@ public class AdmittedStudents extends AppCompatActivity {
         getData();
     }
 
+    private void AddData() {
+
+        for (int i = 0; i < userPojoArrayList1.size(); i++){
+
+            String name = userPojoArrayList1.get(i).getName();
+            String age = userPojoArrayList1.get(i).getAge();
+            String maritalStatus = userPojoArrayList1.get(i).getMarital_status();
+            String photoUrl = userPojoArrayList1.get(i).getPhoto_url();
+            String height = userPojoArrayList1.get(i).getHeight();
+
+            double latitude = userPojoArrayList1.get(i).getLatitude();
+            double longitude = userPojoArrayList1.get(i).getLongitude();
+
+            String iqRating = userPojoArrayList1.get(i).getIq_rating();
+            String gender = userPojoArrayList1.get(i).getGender();
+            String key = userPojoArrayList1.get(i).getKeyId();
+
+            String Lat = String.valueOf(latitude);
+            String Long = String.valueOf(longitude);
+
+            Cursor cursor = db.rawQuery("SELECT * FROM "+TABLE_USER_DETAILS, null);
+            if (cursor != null && cursor.moveToFirst()){
+
+                do {
+
+                    String query = "Select * From "+TABLE_USER_DETAILS +" WHERE "
+                            + KEY_FIREBASE_ID + " = '"+key+"'";
+
+                    Cursor cursor1 = db.rawQuery(query, null);
+
+                    try{
+
+                        if(cursor1.getCount() > 0){
+
+                            //No need to add data as all are in SQLite
+
+
+                        }else {
+
+                            //No data in SQLite but adds
+                            databaseHelper.addUserDetails(key, name, age,maritalStatus,photoUrl
+                                    ,height,Long,Lat,gender, iqRating);
+
+                        }
+
+                    }catch (Exception e){
+
+                        Log.e("-*-*-* ",e.toString());
+
+                    }finally {
+                        if (cursor1 != null){
+                            cursor1.close();
+                        }
+                    }
+
+                }while (cursor.moveToNext());
+
+
+            }else {
+
+                databaseHelper.addUserDetails(key, name, age,maritalStatus,photoUrl
+                        ,height,Long,Lat,gender, iqRating);
+
+            }
+
+
+
+        }
+
+        startActivity(new Intent(getApplicationContext(), FinalAdmission.class));
+    }
 
 
     private ArrayList<User_Pojo> getData(){
@@ -118,14 +204,21 @@ public class AdmittedStudents extends AppCompatActivity {
 
                     User_Pojo user_pojo = new User_Pojo();
 
+
                     final int Iq = Integer.parseInt(childSnapshot.child("iq_rating").getValue().toString());
+
                     final double longitude = (double) childSnapshot.child("longitude").getValue();
+                    double latitude = (double) childSnapshot.child("latitude").getValue();
 
                     String name = childSnapshot.child("name").getValue().toString();
                     String age = childSnapshot.child("age").getValue().toString();
                     String photo_url = childSnapshot.child("photo_url").getValue().toString();
                     String iq_rating = childSnapshot.child("iq_rating").getValue().toString();
                     String gender = childSnapshot.child("gender").getValue().toString();
+
+                    String height = childSnapshot.child("height").getValue().toString();
+                    String marital_status = childSnapshot.child("marital_status").getValue().toString();
+                    String key = childSnapshot.getKey();
 
                     if (longitude < 5.33 && longitude > -4.76) {
 
@@ -140,6 +233,13 @@ public class AdmittedStudents extends AppCompatActivity {
                             user_pojo.setPhoto_url(photo_url);
                             user_pojo.setGender(gender);
                             user_pojo.setIq_rating(iq_rating);
+
+                            user_pojo.setLatitude(latitude);
+                            user_pojo.setLongitude(longitude);
+                            user_pojo.setHeight(height);
+                            user_pojo.setMarital_status(marital_status);
+
+                            user_pojo.setKeyId(key);
 
 //                                Collections.sort(userPojoArrayList1, new Comparator<User_Pojo>() {
 //                                    @Override

@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static String DATABASE_NAME = "user_details";
     private static final int DATABASE_VERSION = 1;
 
-    private static final String TABLE_USER_DETAILS = "user_details";
+    public static final String TABLE_USER_DETAILS = "user_details";
 
     private static final String KEY_ID = "id";
 
@@ -30,9 +30,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_LATITUDE = "latitude";
 
     private static final String KEY_GENDER = "gender";
+    private static final String KEY_FIREBASE_ID = "key_id";
 
     private static final String CREATE_TABLE_USER_DETAILS = "CREATE TABLE "
             + TABLE_USER_DETAILS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + KEY_FIREBASE_ID + " TEXT, "
             + KEY_NAME + " TEXT, "
             + KEY_AGE + " TEXT, "
             + KEY_MARITAL_STATUS + " TEXT, "
@@ -62,13 +64,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long addUserDetails(String name,String age,String status, String photo, String height,
+    public long addUserDetails(String keyId, String name, String age,String status, String photo, String height,
                          String latitude, String longitude, String gender, String iq){
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         //TABLE_COORDINATES_ATTRIBUTE_NAME
         ContentValues valuesRef = new ContentValues();
+        valuesRef.put(KEY_FIREBASE_ID, keyId);
         valuesRef.put(KEY_NAME, name);
         valuesRef.put(KEY_AGE, age);
         valuesRef.put(KEY_MARITAL_STATUS, status);
@@ -139,8 +142,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             }
 
+            deleteCurrentUser(id);
+
             c.close();
         }
+
+    }
+
+    public void deleteCurrentUser(long id) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TABLE_USER_DETAILS, KEY_ID + " = ?",new String[]{String.valueOf(id)});
 
     }
 
