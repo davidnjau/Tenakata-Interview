@@ -221,7 +221,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                 progressDialog1.setTitle("Data Collection..");
                 progressDialog1.setMessage("Please wait as we get gps coordinates. Make sure you are not in a building or have obstacles around you.");
-                progressDialog1.setCanceledOnTouchOutside(false);
 
                 progressDialog1.show();
 
@@ -446,28 +445,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 yourlat.setText("-1.261122");
                 yourlong.setText("36.780050");
 
-            }else {
+                getData();
 
+            }else {
+                getData();
 
                 yourlat.setText(locationLatitude);
                 yourlong.setText(locationLongitude);
 
             }
 
-            String txtLat = yourlat.getText().toString();
-            String txtLong = yourlong.getText().toString();
 
-
-            if (!TextUtils.isEmpty(txtLat) && !TextUtils.isEmpty(txtLong)){
-
-                progressDialog1.dismiss();
-                layoutView.setVisibility(View.VISIBLE);
-
-
-            }else {
-
-                layoutView.setVisibility(View.GONE);
-            }
 
 
         }
@@ -476,6 +464,26 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             e.printStackTrace();
         }
 
+    }
+
+    private void getData() {
+
+        Toast.makeText(this, "GPS Successfully obtained..", Toast.LENGTH_SHORT).show();
+        progressDialog1.dismiss();
+
+        String txtLat = yourlat.getText().toString();
+        String txtLong = yourlong.getText().toString();
+
+        if (!TextUtils.isEmpty(txtLat) && !TextUtils.isEmpty(txtLong)){
+
+            progressDialog1.dismiss();
+            layoutView.setVisibility(View.VISIBLE);
+
+
+        }else {
+
+            layoutView.setVisibility(View.GONE);
+        }
     }
 
 

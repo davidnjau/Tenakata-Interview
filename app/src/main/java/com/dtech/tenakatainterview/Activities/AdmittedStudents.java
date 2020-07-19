@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -70,9 +71,10 @@ public class AdmittedStudents extends AppCompatActivity {
 
     private ArrayList<User_Pojo> user_pojo_items;
     private DataRecyclerAdapter dataRecyclerAdapter;
+    ArrayList<User_Pojo> user_pojoArrayList = new ArrayList<User_Pojo>();
 
     private Button btnSave;
-    ArrayList<User_Pojo> userPojoArrayList1 = new ArrayList<User_Pojo>();
+
 
     private DatabaseHelper databaseHelper;
     SQLiteDatabase db;
@@ -84,10 +86,17 @@ public class AdmittedStudents extends AppCompatActivity {
 
     int pageSize = 860;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admitted_students);
+
+        progressDialog = new ProgressDialog(this);
+
+        progressDialog.setTitle("Please wait. ");
+        progressDialog.setMessage("We are loading data from our database");
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -122,7 +131,82 @@ public class AdmittedStudents extends AppCompatActivity {
 
         getData();
     }
+
+    private void getData(){
+
+        final ArrayList<User_Pojo> userPojoArrayList = new ArrayList<User_Pojo>();
+
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+
+                    User_Pojo user_pojo = new User_Pojo();
+
+
+                    final int Iq = Integer.parseInt(childSnapshot.child("iq_rating").getValue().toString());
+
+                    final double longitude = (double) childSnapshot.child("longitude").getValue();
+                    double latitude = (double) childSnapshot.child("latitude").getValue();
+
+                    String name = childSnapshot.child("name").getValue().toString();
+                    String age = childSnapshot.child("age").getValue().toString();
+                    String photo_url = childSnapshot.child("photo_url").getValue().toString();
+                    String iq_rating = childSnapshot.child("iq_rating").getValue().toString();
+                    String gender = childSnapshot.child("gender").getValue().toString();
+
+                    String height = childSnapshot.child("height").getValue().toString();
+                    String marital_status = childSnapshot.child("marital_status").getValue().toString();
+                    String key = childSnapshot.getKey();
+
+                    if (longitude < 5.33 && longitude > -4.76) {
+
+                        //Check if longitudes are within the Kenyan geographical borders
+
+                        if (Iq > 100) {
+
+                            //Only Display persons with IQ more than 100
+
+                            user_pojo.setName(name);
+                            user_pojo.setAge(age);
+                            user_pojo.setPhoto_url(photo_url);
+                            user_pojo.setGender(gender);
+                            user_pojo.setIq_rating(iq_rating);
+
+                            user_pojo.setLatitude(latitude);
+                            user_pojo.setLongitude(longitude);
+                            user_pojo.setHeight(height);
+                            user_pojo.setMarital_status(marital_status);
+
+                            user_pojo.setKeyId(key);
+
+                            userPojoArrayList.add(user_pojo);
+
+                            AddData(userPojoArrayList);
+
+                        }
+
+                    }
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
+
+
     private void GeneratePdf() {
+
+        ArrayList<User_Pojo> userPojoArrayList1 = databaseHelper.getAdmittedList();
 
         if (userPojoArrayList1.size() > 0){
 
@@ -212,7 +296,7 @@ public class AdmittedStudents extends AppCompatActivity {
 
             myPdfDocument.close();
 
-            Toast.makeText(AdmittedStudents.this, "Pdf has been generated and saved as applicants.pdf in your phone.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AdmittedStudents.this, "Pdf has been generated and saved as applicants.pdf in your phone.", Toast.LENGTH_LONG).show();
 
 
         }else {
@@ -226,6 +310,8 @@ public class AdmittedStudents extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        RequestPermissions();
 
         if (permissionAlreadyGranted()){
 
@@ -273,78 +359,7 @@ public class AdmittedStudents extends AppCompatActivity {
         }
     }
 
-
-    private ArrayList<User_Pojo> getData(){
-
-        userPojoArrayList1.clear();
-
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
-
-                    User_Pojo user_pojo = new User_Pojo();
-
-
-                    final int Iq = Integer.parseInt(childSnapshot.child("iq_rating").getValue().toString());
-
-                    final double longitude = (double) childSnapshot.child("longitude").getValue();
-                    double latitude = (double) childSnapshot.child("latitude").getValue();
-
-                    String name = childSnapshot.child("name").getValue().toString();
-                    String age = childSnapshot.child("age").getValue().toString();
-                    String photo_url = childSnapshot.child("photo_url").getValue().toString();
-                    String iq_rating = childSnapshot.child("iq_rating").getValue().toString();
-                    String gender = childSnapshot.child("gender").getValue().toString();
-
-                    String height = childSnapshot.child("height").getValue().toString();
-                    String marital_status = childSnapshot.child("marital_status").getValue().toString();
-                    String key = childSnapshot.getKey();
-
-                    if (longitude < 5.33 && longitude > -4.76) {
-
-                        //Check if longitudes are within the Kenyan geographical borders
-
-                        if (Iq > 100) {
-
-                            //Only Display persons with IQ more than 100
-
-                            user_pojo.setName(name);
-                            user_pojo.setAge(age);
-                            user_pojo.setPhoto_url(photo_url);
-                            user_pojo.setGender(gender);
-                            user_pojo.setIq_rating(iq_rating);
-
-                            user_pojo.setLatitude(latitude);
-                            user_pojo.setLongitude(longitude);
-                            user_pojo.setHeight(height);
-                            user_pojo.setMarital_status(marital_status);
-
-                            user_pojo.setKeyId(key);
-
-                            AddData();
-
-                        }
-
-                    }
-
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-        return userPojoArrayList1;
-
-    }
-    private void AddData() {
+    private void AddData(ArrayList<User_Pojo> userPojoArrayList1) {
 
         for (int i = 0; i < userPojoArrayList1.size(); i++){
 
@@ -409,15 +424,31 @@ public class AdmittedStudents extends AppCompatActivity {
 
             }
 
+            PopulateRecyclerView();
 
 
         }
 
-        userPojoArrayList1 = databaseHelper.getAdmittedList();
 
-        dataRecyclerAdapter = new DataRecyclerAdapter(getApplicationContext(), userPojoArrayList1);
+
+    }
+
+    private void PopulateRecyclerView(){
+
+
+
+        user_pojoArrayList = databaseHelper.getAdmittedList();
+        if (user_pojoArrayList.size() < 1){
+
+            progressDialog.show();
+
+        }else {
+
+            progressDialog.dismiss();
+
+        }
+        dataRecyclerAdapter = new DataRecyclerAdapter(getApplicationContext(), user_pojoArrayList);
         recyclerView.setAdapter(dataRecyclerAdapter);
-
     }
 
 
